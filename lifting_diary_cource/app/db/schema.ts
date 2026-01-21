@@ -23,6 +23,7 @@ export const exercises = pgTable("exercises", {
 // Workout sessions
 export const workoutsTable = pgTable("workouts", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 255 }).notNull(),
   name: varchar({ length: 255 }),
   workout_date: timestamp("workout_date").notNull(),
   started_at: timestamp("started_at"),
@@ -30,7 +31,9 @@ export const workoutsTable = pgTable("workouts", {
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => ({
+  userIdIdx: index("workouts_user_id_idx").on(table.user_id),
   dateIdx: index("workouts_date_idx").on(table.workout_date),
+  userDateIdx: index("workouts_user_date_idx").on(table.user_id, table.workout_date),
 }));
 
 // Exercises within a workout
