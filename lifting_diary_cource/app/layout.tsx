@@ -40,8 +40,16 @@ export default function RootLayout({
             <h1 className="text-xl font-semibold">Lifting Diary</h1>
             <div className="flex items-center gap-4">
               <SignedOut>
-                <SignInButton mode="modal" />
-                <SignUpButton mode="modal" />
+                <SignInButton mode="modal">
+                  <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium transition-colors">
+                    Sign Up
+                  </button>
+                </SignUpButton>
               </SignedOut>
               <SignedIn>
                 <UserButton />
