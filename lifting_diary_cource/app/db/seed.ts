@@ -1,33 +1,14 @@
 import 'dotenv/config';
 import { db } from './index';
-import { muscleGroupsTable, exerciseCatalogTable } from './schema';
+import { exercises } from './schema';
 
 async function seed() {
   console.log('🌱 Seeding database...');
 
   try {
-    // Seed muscle groups
-    console.log('📦 Seeding muscle groups...');
-    await db.insert(muscleGroupsTable).values([
-      { name: 'Chest', category: 'Upper', description: 'Pectoral muscles' },
-      { name: 'Back', category: 'Upper', description: 'Latissimus dorsi, rhomboids, traps' },
-      { name: 'Shoulders', category: 'Upper', description: 'Deltoids' },
-      { name: 'Biceps', category: 'Upper', description: 'Biceps brachii' },
-      { name: 'Triceps', category: 'Upper', description: 'Triceps brachii' },
-      { name: 'Forearms', category: 'Upper', description: 'Forearm muscles' },
-      { name: 'Quadriceps', category: 'Lower', description: 'Front thigh muscles' },
-      { name: 'Hamstrings', category: 'Lower', description: 'Back thigh muscles' },
-      { name: 'Glutes', category: 'Lower', description: 'Gluteal muscles' },
-      { name: 'Calves', category: 'Lower', description: 'Calf muscles' },
-      { name: 'Abs', category: 'Core', description: 'Abdominal muscles' },
-      { name: 'Obliques', category: 'Core', description: 'Side abdominal muscles' },
-      { name: 'Lower Back', category: 'Core', description: 'Erector spinae' },
-    ]);
-    console.log('✅ Muscle groups seeded');
-
     // Seed common exercises
     console.log('📦 Seeding exercises...');
-    await db.insert(exerciseCatalogTable).values([
+    await db.insert(exercises).values([
       // Chest exercises
       { name: 'Bench Press' },
       { name: 'Incline Bench Press' },
