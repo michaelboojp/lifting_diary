@@ -19,7 +19,7 @@ export function DatePicker({ selectedDate }: DatePickerProps) {
   const handleDateSelect = (newDate: Date | undefined) => {
     if (newDate) {
       setDate(newDate)
-      // Update URL with selected date
+      // Update URL with selected date (formatted in JST)
       const dateStr = format(newDate, "yyyy-MM-dd")
       router.push(`/dashboard?date=${dateStr}`)
     }

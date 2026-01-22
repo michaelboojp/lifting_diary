@@ -1,4 +1,5 @@
 import { format, parse } from "date-fns"
+import { toZonedTime } from "date-fns-tz"
 import { getWorkoutsByDate } from "@/data/workouts"
 import { DatePicker } from "@/components/date-picker"
 import { WorkoutCard } from "@/components/workout-card"
@@ -11,10 +12,10 @@ interface DashboardPageProps {
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const params = await searchParams
 
-  // Get date from URL params or default to today
+  // Get date from URL params or default to today (in JST)
   const selectedDate = params.date
     ? parse(params.date, "yyyy-MM-dd", new Date())
-    : new Date()
+    : toZonedTime(new Date(), "Asia/Tokyo")
 
   // Fetch workouts for the selected date (Server Component data fetching)
   const workouts = await getWorkoutsByDate(selectedDate)

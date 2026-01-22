@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "@/app/db"
 import { workoutsTable } from "@/app/db/schema"
 import { eq, and, gte, lt } from "drizzle-orm"
+import { zonedTimeToUtc } from "date-fns-tz"
 
 /**
  * Get all workouts for the current user on a specific date
@@ -16,12 +17,23 @@ export async function getWorkoutsByDate(date: Date) {
     throw new Error("Unauthorized")
   }
 
-  // Get start and end of the day for the date range
-  const startOfDay = new Date(date)
-  startOfDay.setHours(0, 0, 0, 0)
+  // Get start and end of the day in JST (Japan Standard Time)
+  // Convert JST midnight to UTC for database query
+  const jstStartOfDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    0, 0, 0, 0
+  )
+  const startOfDay = zonedTimeToUtc(jstStartOfDay, "Asia/Tokyo")
 
-  const endOfDay = new Date(date)
-  endOfDay.setHours(23, 59, 59, 999)
+  const jstEndOfDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    23, 59, 59, 999
+  )
+  const endOfDay = zonedTimeToUtc(jstEndOfDay, "Asia/Tokyo")
 
   // CRITICAL: Filter by current user's ID and date range
   const workouts = await db.query.workoutsTable.findMany({
