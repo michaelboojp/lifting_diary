@@ -16,20 +16,17 @@ export async function getWorkoutsByDate(date: Date) {
     throw new Error("Unauthorized")
   }
 
-  // Get start and end of the day in JST (Japan Standard Time)
-  // Create UTC timestamps for midnight JST by adjusting for +9 hours offset
+  // Database stores timestamps as JST (not UTC)
+  // So we query directly with the date without timezone conversion
   const year = date.getFullYear()
   const month = date.getMonth()
   const day = date.getDate()
 
-  // Create midnight JST in UTC (JST is UTC+9, so subtract 9 hours from UTC midnight)
-  // For example: Jan 17 00:00 JST = Jan 16 15:00 UTC
-  const startOfDayUTC = Date.UTC(year, month, day, 0, 0, 0, 0) - (9 * 60 * 60 * 1000)
-  const startOfDay = new Date(startOfDayUTC)
+  // Create start of day in JST (no conversion needed, DB stores JST)
+  const startOfDay = new Date(year, month, day, 0, 0, 0, 0)
 
-  // Create end of day JST in UTC
-  const endOfDayUTC = Date.UTC(year, month, day, 23, 59, 59, 999) - (9 * 60 * 60 * 1000)
-  const endOfDay = new Date(endOfDayUTC)
+  // Create end of day in JST
+  const endOfDay = new Date(year, month, day, 23, 59, 59, 999)
 
   // CRITICAL: Filter by current user's ID and date range
   const workouts = await db.query.workoutsTable.findMany({
