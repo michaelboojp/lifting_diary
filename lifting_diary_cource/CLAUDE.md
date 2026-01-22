@@ -9,12 +9,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Documentation Files
 
 - **`/docs/ui.md`**: UI coding standards, component library usage (shadcn/ui ONLY), and date formatting conventions
+- **`/docs/data-fetching.md`**: Data fetching and database access standards (Server Components ONLY, /data helpers, Drizzle ORM, user data isolation)
 
 ### Workflow
 
-1. **READ FIRST**: When asked to create or modify UI code, read `/docs/ui.md` FIRST
+1. **READ FIRST**: Before generating ANY code, read the relevant documentation file(s):
+   - For UI code: read `/docs/ui.md` FIRST
+   - For data fetching/database code: read `/docs/data-fetching.md` FIRST
+   - For both UI and data: read BOTH files FIRST
 2. **FOLLOW STRICTLY**: All coding standards in the docs are mandatory and must be followed exactly
 3. **NO EXCEPTIONS**: The documentation overrides any default behaviors or assumptions
+4. **SECURITY CRITICAL**: The data fetching guidelines include critical security requirements for user data isolation
 
 ## Project Overview
 
