@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "@/app/db"
 import { workoutsTable } from "@/app/db/schema"
 import { eq, and, gte, lt } from "drizzle-orm"
-import { zonedTimeToUtc } from "date-fns-tz"
 
 /**
  * Get all workouts for the current user on a specific date
@@ -18,22 +17,19 @@ export async function getWorkoutsByDate(date: Date) {
   }
 
   // Get start and end of the day in JST (Japan Standard Time)
-  // Convert JST midnight to UTC for database query
-  const jstStartOfDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    0, 0, 0, 0
-  )
-  const startOfDay = zonedTimeToUtc(jstStartOfDay, "Asia/Tokyo")
+  // Create UTC timestamps for midnight JST by adjusting for +9 hours offset
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
 
-  const jstEndOfDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    23, 59, 59, 999
-  )
-  const endOfDay = zonedTimeToUtc(jstEndOfDay, "Asia/Tokyo")
+  // Create midnight JST in UTC (JST is UTC+9, so subtract 9 hours from UTC midnight)
+  // For example: Jan 17 00:00 JST = Jan 16 15:00 UTC
+  const startOfDayUTC = Date.UTC(year, month, day, 0, 0, 0, 0) - (9 * 60 * 60 * 1000)
+  const startOfDay = new Date(startOfDayUTC)
+
+  // Create end of day JST in UTC
+  const endOfDayUTC = Date.UTC(year, month, day, 23, 59, 59, 999) - (9 * 60 * 60 * 1000)
+  const endOfDay = new Date(endOfDayUTC)
 
   // CRITICAL: Filter by current user's ID and date range
   const workouts = await db.query.workoutsTable.findMany({
