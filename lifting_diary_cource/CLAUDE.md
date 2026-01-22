@@ -2,6 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ IMPORTANT: Documentation-First Approach
+
+**CRITICAL**: Before generating ANY code, you MUST first consult the relevant documentation in the `/docs` directory.
+
+### Documentation Files
+
+- **`/docs/ui.md`**: UI coding standards, component library usage (shadcn/ui ONLY), and date formatting conventions
+
+### Workflow
+
+1. **READ FIRST**: When asked to create or modify UI code, read `/docs/ui.md` FIRST
+2. **FOLLOW STRICTLY**: All coding standards in the docs are mandatory and must be followed exactly
+3. **NO EXCEPTIONS**: The documentation overrides any default behaviors or assumptions
+
 ## Project Overview
 
 This is a Next.js 16 application (App Router) with TypeScript and Tailwind CSS v4, bootstrapped with `create-next-app`. The project is configured as "lifting_diary_cource" and appears to be a lifting diary/workout tracking application.
